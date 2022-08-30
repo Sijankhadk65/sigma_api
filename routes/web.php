@@ -30,8 +30,6 @@ $router->group(['prefix' => 'ticket'], function () use ($router) {
     $router->delete('/delete/{id}', 'TicketController@delete');
 });
 
-$router->get('/issue', 'IssueController@get');
-
 $router->get('/issue/{id}', 'IssueController@get');
 
 $router->get('/bill', 'BillController@get');

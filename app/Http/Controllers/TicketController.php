@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Issue;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -47,6 +48,17 @@ class TicketController extends Controller
     }
 
     /**
+     * Maps an Object to an Array
+     * 
+     * @param Object $item
+     * @return Array
+     */
+    public static function mapToArray($item)
+    {
+        return (array) $item;
+    }
+
+    /**
      * Creates a single ticket
      * 
      * @param Request $request
@@ -54,11 +66,19 @@ class TicketController extends Controller
      */
     public function create(Request $request)
     {
-        if ($request->getMethod() == "POST") {
-            $ticket = Ticket::create($request->all());
-        }
-        return (new Response($ticket, 201))
-            ->header('Content-Type', 'application/json');
+        // if ($request->getMethod() == "POST") {
+        //     $param = json_decode($request->all()['param']);
+        //     $ticket = (array) $param->ticket;
+        //     $issues = array_map("self::mapToArray", $param->issues);
+        //     $newTicket = Ticket::create($ticket);
+        //     foreach ($issues as $issue) {
+        //         $issue['ticket_id'] = $newTicket->id;
+        //         $newIssue = Issue::create($issue);
+        //     }
+        // }
+        return (new Response($request->all(), 200))
+            ->header('Content-Type', 'application/json;charset=UTF-8')
+            ->header('Charset', 'utf-8');
     }
 
 
