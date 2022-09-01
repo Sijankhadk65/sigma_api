@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
+use Illuminate\Http\Response;
+
 class CustomerController extends Controller
 {
 
@@ -11,11 +14,13 @@ class CustomerController extends Controller
      * @param int $id
      * @return Response
      */
-    public function get($id = null)
+    public function get($id)
     {
-        if ($id == null)
-            return 'Returns a list of customers';
-        else
-            return 'Returns a single customer of id: ' . $id;
+        $data = response()->json(Customer::find($id));
+        $response = [
+            "data" => $data,
+        ];
+        return (new Response($response, 200))
+            ->header('Content-Type', 'application/json');
     }
 }

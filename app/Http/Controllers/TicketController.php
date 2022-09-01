@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Issue;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
@@ -50,12 +51,12 @@ class TicketController extends Controller
     /**
      * Maps an Object to an Array
      * 
-     * @param Object $item
+     * @param String $item
      * @return Array
      */
     public static function mapToArray($item)
     {
-        return (array) $item;
+        return json_decode($item, true);
     }
 
     /**
@@ -66,17 +67,21 @@ class TicketController extends Controller
      */
     public function create(Request $request)
     {
-        // if ($request->getMethod() == "POST") {
-        //     $param = json_decode($request->all()['param']);
-        //     $ticket = (array) $param->ticket;
-        //     $issues = array_map("self::mapToArray", $param->issues);
-        //     $newTicket = Ticket::create($ticket);
-        //     foreach ($issues as $issue) {
-        //         $issue['ticket_id'] = $newTicket->id;
-        //         $newIssue = Issue::create($issue);
-        //     }
-        // }
-        return (new Response($request->all(), 200))
+        if ($request->getMethod() == "POST") {
+            $param  = json_decode($request->all()['param']);
+            $customer = json_decode($param->customer, true);
+            $ticket = json_decode($param->ticket, true);
+            $issues = array_map("self::mapToArray", $param->issues);
+            $newCustomer = Customer::create($customer);
+            $ticket['customer_id'] = $newCustomer->id;
+            $newTicket = Ticket::create($ticket);
+            foreach ($issues as $issue) {
+                $issue['ticket_id'] = $newTicket->id;
+                $newIssue = Issue::create($issue);
+            }
+        }
+
+        return (new Response($newTicket, 200))
             ->header('Content-Type', 'application/json;charset=UTF-8')
             ->header('Charset', 'utf-8');
     }

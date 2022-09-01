@@ -36,7 +36,7 @@ $router->get('/bill', 'BillController@get');
 
 $router->get('/bill/{id}', 'BillController@get');
 
-$router->get('/customer', 'CustomerController@get');
+// $router->get('/customer', 'CustomerController@get');
 
 $router->get('/customer/{id}', 'CustomerController@get');
 
