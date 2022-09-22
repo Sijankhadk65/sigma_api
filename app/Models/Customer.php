@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Customer extends Model
 {
@@ -30,4 +31,32 @@ class Customer extends Model
      * @var string[]
      */
     protected $hidden = [];
+
+    /**
+     * Boot function for setting triggers
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($customer) {
+            $customer->{$customer->getKeyName()} = (string) Str::orderedUuid();
+        });
+    }
+
+    /**
+     * $incrementing = false
+     */
+    public function getIncrementing()
+    {
+        return false;
+    }
+
+
+    /**
+     * $keyType = 'string'
+     */
+    public function getKeyType()
+    {
+        return 'string';
+    }
 }

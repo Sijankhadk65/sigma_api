@@ -7,6 +7,8 @@ use App\Models\Issue;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
+
 
 class TicketController extends Controller
 {

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Ticket extends Model
 {
@@ -22,19 +23,22 @@ class Ticket extends Model
         'customer_id',
         'total_service_cost',
         'is_closed',
-        'is_delivered',
-        'delivered_at',
-        'delivery_location',
+        'pay_recieved_by',
+        // 'is_delivered',
+        'paid_at',
+        // 'delivery_location',
         'is_payment_due',
         'opened_by',
         'opened_at',
-        'due_at',
+        // 'due_at',
         'closed_by',
         'closed_at',
         'serviced_by',
         'issue_count',
         'open_issue',
         'closed_issue',
+        'device_manufacturer',
+        'device_model',
     ];
 
     /**
@@ -43,4 +47,32 @@ class Ticket extends Model
      * @var string[]
      */
     protected $hidden = [];
+
+    /**
+     * Boot function for setting triggers
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($ticket) {
+            $ticket->{$ticket->getKeyName()} = (string) Str::orderedUuid();
+        });
+    }
+
+    /**
+     * $incrementing = false
+     */
+    public function getIncrementing()
+    {
+        return false;
+    }
+
+
+    /**
+     * $keyType = 'string'
+     */
+    public function getKeyType()
+    {
+        return 'string';
+    }
 }

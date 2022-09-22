@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Issue;
 use Illuminate\Http\Response;
+use Illuminate\Http\Request;
 
 class IssueController extends Controller
 {
@@ -24,20 +25,24 @@ class IssueController extends Controller
      * Retrives a single ticket
      * 
      * @param int $id
+     * @param Request $request
      * @return Response
      */
-    public function get($id = null)
+    public function get(Request $request, $id = null)
     {
         if ($id == null) {
+            $issues = [];
         } else {
-            $issues = Issue::query()
-                ->where('ticket_id', $id)
-                ->get();
+            $issues = response()->json(Issue::query()
+                ->where('ticket_id', '=', $id)
+                ->get());
         }
 
-        // var_dump($issues);
+        $response = [
+            'data' => $issues,
+        ];
 
-        return (new Response($issues, 200))
+        return (new Response($response, 200))
             ->header('Content-Type', 'application/json');
     }
 }

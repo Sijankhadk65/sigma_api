@@ -40,9 +40,7 @@ $router->get('/bill/{id}', 'BillController@get');
 
 $router->get('/customer/{id}', 'CustomerController@get');
 
-$router->get('/servicer', 'ServicerController@get');
-
-$router->get('/servicer/{id}', 'ServicerController@get');
+$router->get('/worker/{id}', 'WorkerController@get');
 
 $router->get('/service_center', 'ServiceCenterController@get');
 

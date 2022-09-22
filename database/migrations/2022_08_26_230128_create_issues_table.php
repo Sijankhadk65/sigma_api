@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('issues', function (Blueprint $table) {
-            $table->increments('id');
+            $table->uuid('id')->primary();
             $table->timestamp('created_at');
-            $table->integer('ticket_id');
+            $table->uuid('ticket_id');
             $table->boolean('is_closed');
             $table->string('description');
         });

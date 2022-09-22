@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Issue extends Model
 {
@@ -32,4 +33,31 @@ class Issue extends Model
      * @var string[]
      */
     protected $hidden = [];
+    /**
+     * Boot function for setting triggers
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($issue) {
+            $issue->{$issue->getKeyName()} = (string) Str::uuid();
+        });
+    }
+
+    /**
+     * $incrementing = false
+     */
+    public function getIncrementing()
+    {
+        return false;
+    }
+
+
+    /**
+     * $keyType = 'string'
+     */
+    public function getKeyType()
+    {
+        return 'string';
+    }
 }
