@@ -24,9 +24,9 @@ return new class extends Migration
             $table->integer('pay_recieved_by')->nullable();
             $table->timestamp('paid_at')->nullable();
             $table->boolean('is_payment_due');
-            $table->integer('opened_by');
+            $table->uuid('opened_by');
             $table->timestamp('opened_at');
-            $table->integer('closed_by')->nullable();
+            $table->uuid('closed_by')->nullable();
             $table->timestamp('closed_at')->nullable();
             $table->uuid('serviced_by')->nullable();
             $table->integer('issue_count');

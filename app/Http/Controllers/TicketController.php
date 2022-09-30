@@ -8,6 +8,7 @@ use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 
 class TicketController extends Controller
@@ -73,6 +74,14 @@ class TicketController extends Controller
             $param  = json_decode($request->all()['param']);
             $customer = json_decode($param->customer, true);
             $ticket = json_decode($param->ticket, true);
+            // echo "<pre>";
+            // echo "Ticket<br>";
+            // var_dump($ticket);
+            // echo "Customer<br>";
+            // var_dump($customer);
+            // echo "Issues<br>";
+            // var_dump(array_map("self::mapToArray", $param->issues));
+            // exit;
             $issues = array_map("self::mapToArray", $param->issues);
             $newCustomer = Customer::create($customer);
             $ticket['customer_id'] = $newCustomer->id;
@@ -100,7 +109,7 @@ class TicketController extends Controller
     {
         $ticket = Ticket::findOrFail($id);
         $ticket->update($request->all());
-
+        
         return (new Response($ticket, 200))
             ->header('Content-Type', 'application/json');
     }
@@ -114,8 +123,19 @@ class TicketController extends Controller
      */
     public function delete(Request $request, $id)
     {
-        Ticket::findOrFail($id)->delete();
-        return (new Response('Deleted Successfully', 200))
+        try {
+            $status = Ticket::findOrFail($id)->delete();
+            return (new Response([
+                'status'  => 1,
+                'message' => "Delete Successful",
+            ], 200))
             ->header('Content-Type', 'application/json');
+        } catch (ModelNotFoundException $th) {
+            return (new Response([
+                'status'  => 0,
+                'message' => $th->getMessage(),
+            ], 200))
+            ->header('Content-Type', 'application/json');
+        }        
     }
 }
