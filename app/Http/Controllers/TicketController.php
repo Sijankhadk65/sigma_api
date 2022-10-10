@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Issue;
 use App\Models\Ticket;
+use App\Models\Worker;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 
@@ -74,14 +74,6 @@ class TicketController extends Controller
             $param  = json_decode($request->all()['param']);
             $customer = json_decode($param->customer, true);
             $ticket = json_decode($param->ticket, true);
-            // echo "<pre>";
-            // echo "Ticket<br>";
-            // var_dump($ticket);
-            // echo "Customer<br>";
-            // var_dump($customer);
-            // echo "Issues<br>";
-            // var_dump(array_map("self::mapToArray", $param->issues));
-            // exit;
             $issues = array_map("self::mapToArray", $param->issues);
             $newCustomer = Customer::create($customer);
             $ticket['customer_id'] = $newCustomer->id;
@@ -108,8 +100,18 @@ class TicketController extends Controller
     public function update(Request $request, $id)
     {
         $ticket = Ticket::findOrFail($id);
-        $ticket->update($request->all());
-        
+        $param  = (array)json_decode($request->all()['param']);
+        if (isset($param['serviced_by'])) {
+            $worker = Worker::find($param['serviced_by']);
+            $response = $worker->update(
+                array(
+                    "total_services" => $worker->total_services + 1,
+                )
+            );
+        }
+
+        $ticket = $ticket->update($param);
+        $ticket = Ticket::findOrFail($id);
         return (new Response($ticket, 200))
             ->header('Content-Type', 'application/json');
     }
@@ -129,13 +131,13 @@ class TicketController extends Controller
                 'status'  => 1,
                 'message' => "Delete Successful",
             ], 200))
-            ->header('Content-Type', 'application/json');
+                ->header('Content-Type', 'application/json');
         } catch (ModelNotFoundException $th) {
             return (new Response([
                 'status'  => 0,
                 'message' => $th->getMessage(),
             ], 200))
-            ->header('Content-Type', 'application/json');
-        }        
+                ->header('Content-Type', 'application/json');
+        }
     }
 }

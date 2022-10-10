@@ -75,4 +75,12 @@ class Ticket extends Model
     {
         return 'string';
     }
+
+    /**
+     * Get the Worker associated with the Ticket 
+     */
+    public function worker()
+    {
+        return $this->belongsTo(Worker::class, 'serviced_by');
+    }
 }
