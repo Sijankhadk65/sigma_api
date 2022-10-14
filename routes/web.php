@@ -45,7 +45,9 @@ $router->group(['prefix' => 'worker'], function () use ($router) {
     $router->get('/{id}', 'WorkerController@get');
 
     $router->post('/create', 'WorkerController@create');
+});
 
+$router->group(['prefix' => 'accounting'], function () use ($router) {
 });
 
 $router->get('/service_center', 'ServiceCenterController@get');

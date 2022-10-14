@@ -76,11 +76,27 @@ class Ticket extends Model
         return 'string';
     }
 
+    /** 
+     * Gets the Issues asscoiated with the ticket
+     */
+    public function issues()
+    {
+        return $this->hasMany(Issue::class);
+    }
+
     /**
      * Get the Worker associated with the Ticket 
      */
     public function worker()
     {
         return $this->belongsTo(Worker::class, 'serviced_by');
+    }
+
+    /**
+     * Get the Expenses asscoicated with the Ticket
+     */
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
     }
 }
