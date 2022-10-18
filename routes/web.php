@@ -48,6 +48,19 @@ $router->group(['prefix' => 'worker'], function () use ($router) {
 });
 
 $router->group(['prefix' => 'accounting'], function () use ($router) {
+
+    $router->get('/transaction', 'AccountController@getTransactions');
+
+    $router->get('/transaction{id}', 'AccountController@getTransactions');
+});
+
+$router->group(['prefix' => 'user'], function () use ($router) {
+
+    // $router->get('/', 'AccountController@getTransactions');
+
+    $router->post('/create', 'UserController@create');
+
+    $router->post('/authenticate', 'UserController@authenticate');
 });
 
 $router->get('/service_center', 'ServiceCenterController@get');

@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Issue;
 use App\Models\Ticket;
+use App\Models\Transaction;
 use App\Models\Worker;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -100,7 +103,8 @@ class TicketController extends Controller
     public function update(Request $request, $id)
     {
         $ticket = Ticket::findOrFail($id);
-        $param  = (array)json_decode($request->all()['param']);
+        // $param  = (array)json_decode($request->all()['param']);
+        $param  = $request->all()['param'];
         if (isset($param['serviced_by'])) {
             $worker = Worker::find($param['serviced_by']);
             $response = $worker->update(
@@ -110,10 +114,25 @@ class TicketController extends Controller
             );
         }
 
-        $ticket = $ticket->update($param);
-        $ticket = Ticket::findOrFail($id);
-        return (new Response($ticket, 200))
-            ->header('Content-Type', 'application/json');
+        if (isset($param['is_payment_due']) && isset($param['user'])) {
+            $newTransactionArray = array(
+                "created_at" => Carbon::now()->toDateTimeString(),
+                "created_by" => $param['user'],
+                "transaction_at" => Carbon::now()->toDateTimeString(),
+                "type" => "credit",
+                "soruce" => "service",
+                "description" => $ticket->id,
+                "amount" => 0,
+            );
+            $newTransaction = Transaction::create($newTransactionArray);
+            var_dump($newTransaction);
+            exit;
+        }
+
+        // $ticket = $ticket->update($param);
+        // $ticket = Ticket::findOrFail($id);
+        // return (new Response($ticket, 200))
+        //     ->header('Content-Type', 'application/json');
     }
 
     /**

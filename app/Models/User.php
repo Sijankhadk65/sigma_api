@@ -8,18 +8,28 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
+use Illuminate\Support\Str;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable, HasFactory;
 
+    public $timestamps = false;
     /**
      * The attributes that are mass assignable.
      *
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email',
+        'username',
+        'role',
+        'fname',
+        'lname',
+        'center_id',
+        'address',
+        'email',
+        'password',
+        'contact_no',
     ];
 
     /**
@@ -27,7 +37,33 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var string[]
      */
-    protected $hidden = [
-        'password',
-    ];
+    protected $hidden = ['password'];
+
+    /**
+     * Boot function for setting triggers
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($user) {
+            $user->{$user->getKeyName()} = (string) Str::uuid();
+        });
+    }
+
+    /**
+     * $incrementing = false
+     */
+    public function getIncrementing()
+    {
+        return false;
+    }
+
+
+    /**
+     * $keyType = 'string'
+     */
+    public function getKeyType()
+    {
+        return 'string';
+    }
 }
