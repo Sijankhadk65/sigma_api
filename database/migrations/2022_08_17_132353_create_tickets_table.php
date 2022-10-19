@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('device_manufacturer');
             $table->string('device_model');
             $table->uuid('customer_id')->nullable();
-            $table->integer('center_id');
+            $table->uuid('center_id');
             $table->integer('total_service_cost')->nullable();
             $table->boolean('is_closed');
             $table->integer('pay_recieved_by')->nullable();
