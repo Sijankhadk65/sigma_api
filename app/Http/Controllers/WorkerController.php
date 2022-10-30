@@ -21,7 +21,11 @@ class WorkerController extends Controller
         if ($id == null) {
             $data = response()->json(Worker::all());
         } else {
-            $data = response()->json(Worker::find($id));
+            $data = response()->json(
+                Worker::query()
+                    ->where('center_id', '=', $id)
+                    ->get()
+            );
         }
 
         $response = [
@@ -40,8 +44,8 @@ class WorkerController extends Controller
     public function create(Request $request)
     {
         if ($request->getMethod() == "POST") {
-            $param = json_decode($request->all()['param']);
-            $worker = json_decode($param->worker, true);
+            $param = $request->all()['param'];
+            $worker = $param['worker'];
             $newWorker = Worker::create($worker);
         }
         return (new Response($newWorker, 200))

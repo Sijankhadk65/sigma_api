@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('address');
             $table->bigInteger('ph_number')->unique();
-            $table->uuid('center_id');
         });
     }
 

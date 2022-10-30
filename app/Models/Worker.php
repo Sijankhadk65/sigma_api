@@ -25,6 +25,7 @@ class Worker extends Model
         'ph_number',
         'total_services',
         'total_income',
+        'center_id'
     ];
 
     /**

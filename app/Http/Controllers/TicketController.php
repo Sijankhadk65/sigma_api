@@ -74,10 +74,14 @@ class TicketController extends Controller
     public function create(Request $request)
     {
         if ($request->getMethod() == "POST") {
-            $param  = json_decode($request->all()['param']);
-            $customer = json_decode($param->customer, true);
-            $ticket = json_decode($param->ticket, true);
-            $issues = array_map("self::mapToArray", $param->issues);
+            $param  = $request->all()['param'];
+            // var_dump($param);
+            // exit;
+            $customer = $param['customer'];
+            $ticket = $param['ticket'];
+            // echo gettype($param['issues']);
+            // exit;
+            $issues = $param['issues'];
             $newCustomer = Customer::create($customer);
             $ticket['customer_id'] = $newCustomer->id;
             $newTicket = Ticket::create($ticket);
