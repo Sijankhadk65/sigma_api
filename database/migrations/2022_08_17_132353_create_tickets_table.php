@@ -21,7 +21,7 @@ return new class extends Migration
             $table->uuid('center_id');
             $table->integer('total_service_cost')->nullable();
             $table->boolean('is_closed');
-            $table->integer('pay_recieved_by')->nullable();
+            $table->uuid('pay_recieved_by')->nullable();
             $table->timestamp('paid_at')->nullable();
             $table->boolean('is_payment_due');
             $table->uuid('opened_by');

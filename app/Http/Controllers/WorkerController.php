@@ -13,7 +13,7 @@ class WorkerController extends Controller
     /**
      * Retrives a single ticket
      * 
-     * @param int $id
+     * @param String $id
      * @return Response
      */
     public function get($id = null)
@@ -22,11 +22,30 @@ class WorkerController extends Controller
             $data = response()->json(Worker::all());
         } else {
             $data = response()->json(
-                Worker::query()
-                    ->where('center_id', '=', $id)
-                    ->get()
+                Worker::find($id)
             );
         }
+
+        $response = [
+            "data" => $data,
+        ];
+        return (new Response($response, 200))
+            ->header('Content-Type', 'application/json');
+    }
+
+    /**
+     * Retives the worker of a certain service center
+     * 
+     * @param String $center_id
+     * @return Resposne 
+     */
+    public function getCenterWorkers($center_id)
+    {
+        $data = response()->json(
+            Worker::query()
+                ->where('center_id', '=', $center_id)
+                ->get()
+        );
 
         $response = [
             "data" => $data,
@@ -45,8 +64,7 @@ class WorkerController extends Controller
     {
         if ($request->getMethod() == "POST") {
             $param = $request->all()['param'];
-            $worker = $param['worker'];
-            $newWorker = Worker::create($worker);
+            $newWorker = Worker::create($param);
         }
         return (new Response($newWorker, 200))
             ->header('Content-Type', 'application/json;charset=UTF-8')

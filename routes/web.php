@@ -44,6 +44,8 @@ $router->group(['prefix' => 'worker'], function () use ($router) {
 
     $router->get('/{id}', 'WorkerController@get');
 
+    $router->get('/center/{center_id}', 'WorkerController@getCenterWorkers');
+
     $router->post('/create', 'WorkerController@create');
 });
 
@@ -61,6 +63,18 @@ $router->group(['prefix' => 'user'], function () use ($router) {
     $router->post('/create', 'UserController@create');
 
     $router->post('/authenticate', 'UserController@authenticate');
+});
+$router->group(['prefix' => 'expense'], function () use ($router) {
+
+    $router->post('/create', 'ExpenseController@create');
+
+    $router->get('/', 'ExpenseController@get');
+
+    $router->get('/{id}', 'ExpenseController@get');
+
+    $router->delete('/delete/{id}', 'ExpenseController@delete');
+
+    // $router->post('/authenticate', 'UserController@authenticate');
 });
 
 $router->get('/service_center', 'ServiceCenterController@get');

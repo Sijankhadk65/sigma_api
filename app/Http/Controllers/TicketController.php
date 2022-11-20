@@ -40,11 +40,20 @@ class TicketController extends Controller
      */
     public function get(Request $request, $id = null)
     {
-        if ($id == null) {
-            $data = response()->json(Ticket::all());
-        } else {
+        // if ($id == null) {
+        //     $data = response()->json(Ticket::all());
+        // } else {
+        //     $data = response()->json(Ticket::find($id);
+        // }
+        if ($id != null) {
             $data = response()->json(Ticket::find($id));
+            // $ticket->expenses;
+            // $ticket->issues;
         }
+        $data = response()->json(Ticket::all());
+        // $data = [
+        //     "ticket"   => $ticket,
+        // ];
 
         $response = [
             "data" => $data,
@@ -133,10 +142,10 @@ class TicketController extends Controller
             exit;
         }
 
-        // $ticket = $ticket->update($param);
-        // $ticket = Ticket::findOrFail($id);
-        // return (new Response($ticket, 200))
-        //     ->header('Content-Type', 'application/json');
+        $ticket = $ticket->update($param);
+        $ticket = Ticket::findOrFail($id);
+        return (new Response($ticket, 200))
+            ->header('Content-Type', 'application/json');
     }
 
     /**
