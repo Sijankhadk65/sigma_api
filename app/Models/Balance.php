@@ -6,16 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Transaction extends Model
+class Balance extends Model
 {
     use HasFactory;
 
     public $timestamps = false;
-    protected $table = 'transactions';
 
-    protected $casts = [
-        'amount' => 'float'
-    ];
 
     /**
      * The attributes that are mass assignable
@@ -24,15 +20,10 @@ class Transaction extends Model
      */
     protected $fillable = [
         'id',
-        'created_at',
-        'created_by',
-        'transaction_at',
-        'type',
-        'source',
-        'description',
-        'amount',
         'center_id',
-        'payment_method'
+        'balance_date',
+        'type',
+        'balance_amount'
     ];
 
     /**
@@ -41,14 +32,15 @@ class Transaction extends Model
      * @var string[]
      */
     protected $hidden = [];
+
     /**
      * Boot function for setting triggers
      */
     protected static function boot()
     {
         parent::boot();
-        static::creating(function ($transaction) {
-            $transaction->{$transaction->getKeyName()} = (string) Str::uuid();
+        static::creating(function ($balance) {
+            $balance->{$balance->getKeyName()} = (string) Str::orderedUuid();
         });
     }
 

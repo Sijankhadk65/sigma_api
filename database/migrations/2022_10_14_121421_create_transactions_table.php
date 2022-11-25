@@ -29,6 +29,14 @@ return new class extends Migration
                 "SALES"    => 'sales',
                 "UTILITY"  => 'utility'
             ));
+            $table->enum('payment_method', array(
+                "CASH"   => "cash",
+                "CHEQUE" => "cheque",
+                "BANK_TRANSFER" => "bank_transfer",
+                "ESEWA" => "esewa",
+                "KHALTI" => "khalti",
+                "FONE_PAY" => "fone_pay"
+            ));
             $table->string('description')->nullable();
             $table->decimal('amount');
             $table->uuid('center_id');
