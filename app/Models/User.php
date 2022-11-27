@@ -30,6 +30,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'email',
         'password',
         'contact_no',
+        'photo_uri',
     ];
 
     /**

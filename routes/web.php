@@ -88,6 +88,23 @@ $router->group(['prefix' => 'expense'], function () use ($router) {
     $router->delete('/delete/{id}', 'ExpenseController@delete');
 });
 
+$router->group(['prefix' => 'inventory'], function () use ($router) {
+
+    $router->post('/sales/create', 'SalesController@create');
+
+    $router->get('/sales/{id}', 'SalesController@get');
+
+    $router->get('/salesItems/{id}', 'SalesController@getItems');
+
+    $router->post('/stock/createItem', 'StockController@createStockItem');
+
+    $router->get('/stock/getItems/{id}', 'StockController@getStockItems');
+
+    $router->delete('/stock/deleteItem/{id}', 'StockController@deleteStockItem');
+
+    $router->put('/stock/updateItem/{id}', 'StockController@updateStockItem');
+});
+
 $router->get('/service_center', 'ServiceCenterController@get');
 
 $router->get('/service_center/{id}', 'ServiceCenterController@get');

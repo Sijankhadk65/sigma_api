@@ -17,12 +17,11 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('username');
             $table->string('password');
-
+            $table->string('photo_uri');
             $table->enum('role', array(
                 "ADMIN"   => 'admin',
                 "CASHIER" => 'cashier',
             ));
-
             $table->string('fname');
             $table->string('lname');
             $table->uuid('center_id');
