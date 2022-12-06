@@ -26,6 +26,7 @@ class Sales extends Model
         'amount',
         'item_count',
         'customer_id',
+        'payment_method',
     ];
 
     /**

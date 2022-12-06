@@ -64,9 +64,12 @@ class WorkerController extends Controller
     {
         if ($request->getMethod() == "POST") {
             $param = $request->all()['param'];
-            $newWorker = Worker::create($param);
+            $newWorker = response()->json(Worker::create($param));
         }
-        return (new Response($newWorker, 200))
+        $response = [
+            "data" => $newWorker,
+        ];
+        return (new Response($response, 200))
             ->header('Content-Type', 'application/json;charset=UTF-8')
             ->header('Charset', 'utf-8');
     }

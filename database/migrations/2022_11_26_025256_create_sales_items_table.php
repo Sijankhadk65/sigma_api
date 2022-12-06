@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('sales_items', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->uuid('center_id');
             $table->timestamp('created_at');
             $table->string('item_name');
             $table->string('item_photo_uri');

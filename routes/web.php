@@ -98,6 +98,8 @@ $router->group(['prefix' => 'inventory'], function () use ($router) {
 
     $router->post('/stock/createItem', 'StockController@createStockItem');
 
+    $router->post('/stock/createItemPhoto', 'StockController@uploadPhoto');
+
     $router->get('/stock/getItems/{id}', 'StockController@getStockItems');
 
     $router->delete('/stock/deleteItem/{id}', 'StockController@deleteStockItem');

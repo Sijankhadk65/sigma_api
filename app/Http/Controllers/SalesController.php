@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Customer;
 use App\Models\Sales;
 use App\Models\SalesItem;
 use App\Models\StockItem;
@@ -84,7 +84,10 @@ class SalesController extends Controller
         $param = $request->all()['param'];
         $sales = $param['sales'];
         $salesItems = $param['salesItems'];
+        $customer = $param['customer'];
 
+        $newCustomer = Customer::create($customer);
+        $sales['customer_id'] = $newCustomer->id;
         $newSales = Sales::create($sales);
 
         foreach ($salesItems as $item) {
@@ -99,7 +102,7 @@ class SalesController extends Controller
         }
 
         $response = [
-            "data" => $newSales,
+            "data" => response()->json($newSales),
         ];
 
         return (new Response($response, 200))

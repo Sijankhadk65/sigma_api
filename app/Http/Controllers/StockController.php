@@ -67,6 +67,41 @@ class StockController extends Controller
     }
 
     /**
+     * Uploads the photo of an item to the server
+     * 
+     * @param  Request $request
+     * @return Response  
+     */
+    public function uploadPhoto(Request $request)
+    {
+        $param = $request->all()['param'];
+        $base64_string = $param['image'];
+        $outputfileName = $param['imageName'];
+        try {
+            $fileHandler = fopen(getcwd() . '/photos/stock_items/' . $outputfileName, 'wb');
+            fwrite($fileHandler, base64_decode($base64_string));
+            fclose($fileHandler);
+            $data = response()->json([
+                "image_path" => '/photos/stock_items/' . $outputfileName,
+            ]);
+            $exception = "";
+        } catch (\Throwable $th) {
+            $data = response()->json([
+                "image_path" => '',
+            ]);
+            $exception = $th->getMessage();
+        }
+        $data->exception = $exception;
+        $response = [
+            "data" => $data,
+        ];
+        return $response;
+        // (new Response($response, 200))
+        //     ->header('Content-type', 'application/json')
+        //     ->header('charset', 'utf-8');
+    }
+
+    /**
      * Deletes a single stock item
      * 
      * @param Request $request

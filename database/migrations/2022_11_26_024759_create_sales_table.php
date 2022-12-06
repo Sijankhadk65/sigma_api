@@ -21,6 +21,14 @@ return new class extends Migration
             $table->integer('item_count');
             $table->uuid('customer_id');
             $table->uuid('center_id');
+            $table->enum('payment_method', array(
+                "CASH"   => "cash",
+                "CHEQUE" => "cheque",
+                "BANK_TRANSFER" => "bank_transfer",
+                "ESEWA" => "esewa",
+                "KHALTI" => "khalti",
+                "FONE_PAY" => "fone_pay"
+            ));
         });
     }
 
