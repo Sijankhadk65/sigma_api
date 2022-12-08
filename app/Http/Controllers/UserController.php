@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
@@ -47,20 +48,27 @@ class UserController extends Controller
             'username' => 'required',
             'password' => 'required'
         ]);
+        $responseCode = 200;
         $param = $request->all();
         $requestedUser = User::query()
             ->where('username', '=', $param['username'])
             ->first();
-
-        if (Hash::check($param['password'], $requestedUser->password)) {
-            $data =  response()->json($requestedUser);
+        if ($requestedUser != null) {
+            if (Hash::check($param['password'], $requestedUser->password)) {
+                $data =  response()->json($requestedUser);
+            } else {
+                $data =  response()->json([]);
+                $responseCode = 401;
+                $data->exception = "Invalid Password";
+            }
         } else {
-            $data =  response()->json(null);
+            $data = response()->json([]);
+            $data->exception = "Invalid User";
+            $responseCode = 402;
         }
         $response = [
             'data' => $data,
         ];
-        return (new Response($response, 200))
-            ->header('Content-Type', 'application/json');
+        return $response;
     }
 }
