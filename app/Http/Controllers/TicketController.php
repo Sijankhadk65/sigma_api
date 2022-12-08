@@ -118,6 +118,7 @@ class TicketController extends Controller
         $ticket = Ticket::findOrFail($id);
         // $param  = (array)json_decode($request->all()['param']);
         $param  = $request->all()['param'];
+        $updateParams = $param;
         if (isset($param['serviced_by'])) {
             $worker = Worker::find($param['serviced_by']);
             $response = $worker->update(
@@ -142,7 +143,19 @@ class TicketController extends Controller
             exit;
         }
 
-        $ticket = $ticket->update($param);
+        if (isset($param['command']) && isset($param['cost'])) {
+            if ($param['command'] == "increase") {
+                $updateParams = [
+                    "total_service_cost" => $ticket->total_service_cost + $param['cost']
+                ];
+            } elseif ($param['command'] == "decrease") {
+                $updateParams = [
+                    "total_service_cost" => $ticket->total_service_cost - $param['cost']
+                ];
+            }
+        }
+
+        $ticket = $ticket->update($updateParams);
         $ticket = Ticket::findOrFail($id);
         return (new Response($ticket, 200))
             ->header('Content-Type', 'application/json');

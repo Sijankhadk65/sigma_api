@@ -137,15 +137,20 @@ class StockController extends Controller
     {
         $item = StockItem::findOrFail($id);
         $param  = $request->all()['param'];
+        $updateParams = $param;
 
-        if (isset($param['reduce_quantity_by'])) {
-            $newQuantity = $item->quantity - $param['reduce_quantity_by'];
-            $newParams = [
-                "quantity" => $newQuantity
-            ];
-            $item = $item->update($newParams);
+        if (isset($param['command']) && isset($param['quantity'])) {
+            if ($param['command'] == "increase") {
+                $updateParams = [
+                    "quantity" => $item->quantity + $param['quantity']
+                ];
+            } elseif ($param['command'] == "decrease") {
+                $updateParams = [
+                    "quantity" => $item->quantity - $param['quantity']
+                ];
+            }
         }
-
+        $item->update($updateParams);
         $item = StockItem::findOrFail($id);
         return (new Response($item, 200))
             ->header('Content-Type', 'application/json');

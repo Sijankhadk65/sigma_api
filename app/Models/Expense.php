@@ -21,10 +21,13 @@ class Expense extends Model
     protected $fillable = [
         'id',
         'ticket_id',
+        'item_id',
         'item_name',
         'cost',
+        'unit_price',
         'created_at',
-        'created_by'
+        'created_by',
+        'quantity',
     ];
 
     /**

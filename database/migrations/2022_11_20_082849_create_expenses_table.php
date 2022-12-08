@@ -18,8 +18,11 @@ return new class extends Migration
             $table->uuid('ticket_id');
             $table->string('item_name');
             $table->double('cost');
+            $table->double('unit_price');
+            $table->integer('quantity');
             $table->timestamp('created_at');
             $table->uuid('created_by');
+            $table->uuid('item_id');
         });
     }
 
