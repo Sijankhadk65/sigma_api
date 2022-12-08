@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Expense;
+use App\Models\Ticket;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -57,6 +58,9 @@ class ExpenseController extends Controller
             ->header('Content-Type', 'application/json')
             ->header('Charset', 'utf-8');
     }
+
+
+
 
     /**
      * Deletes an element of the Expense model
