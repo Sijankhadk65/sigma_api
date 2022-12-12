@@ -40,7 +40,7 @@ $router->group(['prefix' => 'customer'], function () use ($router) {
 
     $router->get('/id/{id}', 'CustomerController@get');
 
-    $router->get('/number/{num}', 'CustomerController@getFromContact');
+    $router->get('/num/{num}', 'CustomerController@getFromContact');
 
     $router->post('/create', 'CustomerController@create');
 });
