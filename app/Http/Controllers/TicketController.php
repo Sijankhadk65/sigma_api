@@ -86,13 +86,10 @@ class TicketController extends Controller
             $param  = $request->all()['param'];
             // var_dump($param);
             // exit;
-            $customer = $param['customer'];
             $ticket = $param['ticket'];
             // echo gettype($param['issues']);
             // exit;
             $issues = $param['issues'];
-            $newCustomer = Customer::create($customer);
-            $ticket['customer_id'] = $newCustomer->id;
             $newTicket = Ticket::create($ticket);
             foreach ($issues as $issue) {
                 $issue['ticket_id'] = $newTicket->id;

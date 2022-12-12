@@ -36,7 +36,16 @@ $router->get('/bill', 'BillController@get');
 
 $router->get('/bill/{id}', 'BillController@get');
 
-$router->get('/customer/{id}', 'CustomerController@get');
+$router->group(['prefix' => 'customer'], function () use ($router) {
+
+    $router->get('/id/{id}', 'CustomerController@get');
+
+    $router->get('/num/{num}', 'CustomerController@getFromContact');
+
+    $router->post('/create', 'CustomerController@create');
+});
+
+
 
 $router->group(['prefix' => 'worker'], function () use ($router) {
 
