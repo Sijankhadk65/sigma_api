@@ -30,7 +30,7 @@ class AccountController extends Controller
     public function getTransactions(Request $request, $id = null)
     {
         if ($id == null) {
-            $transaction = response()->json(DB::table('transactions')->paginate(1));
+            $transaction = response()->json(Transaction::all());
         } else {
             $transaction = response()->json(Transaction::findOrFail($id));
         }

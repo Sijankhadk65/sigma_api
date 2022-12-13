@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\Customer;
 use App\Models\Issue;
 use App\Models\Ticket;
@@ -50,7 +51,8 @@ class TicketController extends Controller
             // $ticket->expenses;
             // $ticket->issues;
         }
-        $data = response()->json(Ticket::all());
+        // $data = response()->json(Ticket::all());
+        $data = response()->json(DB::table('tickets')->paginate(10),);
         // $data = [
         //     "ticket"   => $ticket,
         // ];
