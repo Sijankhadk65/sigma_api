@@ -12,14 +12,29 @@ class CustomerController extends Controller
     /**
      * Retrives a single ticket
      * 
-     * @param int $id
+     * @param Request $request
+     * @param String $id     * 
+     * 
      * @return Response
      */
-    public function get($id)
+    public function get(Request $request, $id = null, $searchTerm = null)
     {
-        $data = response()->json(
-            Customer::find($id)
-        );
+        if ($id != null) {
+            $data = response()->json(
+                Customer::find($id)
+            );
+        } else if ($searchTerm != null) {
+            $data = response()->json(
+                Customer::query()
+                    ->where("name", 'LIKE', $searchTerm)
+                    ->get()
+            );
+        } else {
+            $data = response()->json(
+                Customer::all()
+            );
+        }
+
         $response = [
             "data" => $data,
         ];

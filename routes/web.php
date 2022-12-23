@@ -21,6 +21,8 @@ $router->group(['prefix' => 'ticket'], function () use ($router) {
 
     $router->get('/', 'TicketController@get');
 
+    $router->get('/filter', 'TicketController@get');
+
     $router->get('/{id}', 'TicketController@get');
 
     $router->post('/create', 'TicketController@create');
@@ -37,6 +39,10 @@ $router->get('/bill', 'BillController@get');
 $router->get('/bill/{id}', 'BillController@get');
 
 $router->group(['prefix' => 'customer'], function () use ($router) {
+
+    $router->get('/', 'CustomerController@get');
+
+    $router->get('/search/{searchTerm}', 'CustomerController@get');
 
     $router->get('/id/{id}', 'CustomerController@get');
 

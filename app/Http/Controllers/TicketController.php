@@ -38,22 +38,28 @@ class TicketController extends Controller
      * @param int $id
      * @return Response
      */
-    public function get(Request $request, $id = null)
+    public function get(Request $request, $id = null, $filters = [])
     {
-        // if ($id == null) {
-        //     $data = response()->json(Ticket::all());
-        // } else {
-        //     $data = response()->json(Ticket::find($id);
-        // }
         if ($id != null) {
             $data = response()->json(Ticket::find($id));
-            // $ticket->expenses;
-            // $ticket->issues;
+        } else if (!$request->filled('filters')) {
+            $data = response()->json(Ticket::all());
+        } else {
+            $filters = $request->input('filters');
+            if (in_array("paid", $filters) && in_array("closed", $filters)) {
+                $payment = "0";
+                $closed = "1";
+            } else if (in_array("not paid", $filters) && in_array("open", $filters)) {
+                $payment = "1";
+                $closed = "0";
+            }
+            $data = response()->json(
+                Ticket::query()
+                    ->where("is_payment_due", "=", $payment)
+                    ->where("Is_closed", "=", $closed)
+                    ->get()
+            );
         }
-        $data = response()->json(Ticket::all());
-        // $data = [
-        //     "ticket"   => $ticket,
-        // ];
 
         $response = [
             "data" => $data,
