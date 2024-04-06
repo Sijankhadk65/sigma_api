@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Str;
 
 class Ticket extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id';
+    public $incrementing = false;
     public $timestamps = false;
 
     /**
@@ -55,7 +58,8 @@ class Ticket extends Model
     {
         parent::boot();
         static::creating(function ($ticket) {
-            $ticket->{$ticket->getKeyName()} = (string) Str::orderedUuid();
+            $ticket->{$ticket->getKeyName()} = IdGenerator::generate(['table' => 'tickets', 'length' => 8, 'prefix' => 'MCE-']);
+            // $ticket->{$ticket->getKeyName()} = (string) Str::orderedUuid();
         });
     }
 
