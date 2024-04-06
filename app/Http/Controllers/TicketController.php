@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\Customer;
 use App\Models\Issue;
 use App\Models\Ticket;
